@@ -1,3 +1,7 @@
+# Ignore db except .gitkeep
+data/*
+!.gitkeep
+
 # Logs
 logs
 *.log
