@@ -12,19 +12,30 @@ const routes = {
 }
 
 module.exports = (req,res)=>{
+	
+	let { method, headers, url } = req
 	let { pathname, search, query } = urlParse(req.url, true);
+	let body = []
+	req.on('data', chunk => {
+		body.push(chunk)
+	}).on (
+		'end', ()=>{
+			body = Buffer.concat(body).toString()
+	})
 	// console.log(pathname, search, query);
 	// console.log(urls.user,pathname.slice(1),urls[pathname.slice(1)])
 	// console.log(req.method)
 	try {
-		if (routes[pathname] && routes[pathname][req.method]) {
-			routes[pathname][req.method](res, JSON.stringify(query))
+		if (routes[pathname] && routes[pathname][method]) {
+			routes[pathname][method](res, JSON.stringify(query), body)
 		} else {
 			throw new Error('No url or method not allowed')
 		}
 	} catch (e) {
 		console.log('hello error',e)
-		res.end('catch:', e)
+		res.statusCode = 500;
+		res.statusMessage = e.msg
+		res.end('caught error', e)
 	}
 	res.end('fail')
 }
