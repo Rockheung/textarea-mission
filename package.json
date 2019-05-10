@@ -1,0 +1,22 @@
+{
+  "name": "textarea-mission",
+  "version": "1.0.0",
+  "description": "``` / GET: set-cookie {sessionId: \"hashString\"} if no sessionId in req. ```",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rockheung/textarea-mission.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Rockheung/textarea-mission/issues"
+  },
+  "homepage": "https://github.com/Rockheung/textarea-mission#readme",
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
+  }
+}
