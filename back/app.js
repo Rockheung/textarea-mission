@@ -1,6 +1,6 @@
 const http = require('http');
 
-const handler = require('./src')
+const handler = require('./ctrlr')
 
 const app = http.createServer(handler)
 

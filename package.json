@@ -1,10 +1,11 @@
 {
   "name": "textarea-mission",
   "version": "1.0.0",
-  "description": "``` / GET: set-cookie {sessionId: \"hashString\"} if no sessionId in req. ```",
+  "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "predev": "mongod --config=mongod.conf",
+		"dev": "npm run --prefix back dev"
   },
   "repository": {
     "type": "git",

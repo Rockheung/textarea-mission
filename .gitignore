@@ -1,6 +1,7 @@
 # Ignore db except .gitkeep
 data/*
 !.gitkeep
+mongod.log
 
 # Logs
 logs

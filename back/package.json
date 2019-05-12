@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "nodemon app.js"
+    "dev": "nodemon app.js"
   },
   "author": "",
   "license": "ISC",
@@ -12,7 +12,5 @@
     "mongodb": "^3.2.3",
     "socket.io": "^2.2.0"
   },
-  "devDependencies": {
-    "nodemon": "^1.19.0"
-  }
+  "devDependencies": {}
 }
