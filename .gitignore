@@ -2,6 +2,7 @@
 data/*
 !.gitkeep
 mongod.log
+mongod.log.*
 
 # Logs
 logs

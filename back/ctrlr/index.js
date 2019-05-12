@@ -17,7 +17,7 @@ module.exports = async (req,res)=>{
 			res.end('options ok')
 			
 		} else if (routes[pathname] && routes[pathname][method]) {
-			routes[pathname][method](res, JSON.stringify(query), await getBody(req))	
+			routes[pathname][method](res, JSON.stringify(query), await getBody(req))
 			
 		} else {
 			throw new Error('No url or method not allowed')

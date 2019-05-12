@@ -7,7 +7,7 @@ exports.getBody = req => {
 			.on('data', chunk => body.push(chunk))
 			.on('end', () => {
 			  body = Buffer.concat(body).toString()
-				resolve(body)
+				resolve(JSON.parse(body))
 		  })
 	})
 }

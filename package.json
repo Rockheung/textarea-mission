@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "predev": "mongod --config=mongod.conf",
+    "predev": "mongod --config=mongod.conf &",
 		"dev": "npm run --prefix back dev"
   },
   "repository": {
