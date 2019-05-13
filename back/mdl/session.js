@@ -15,6 +15,7 @@ exports.signIn = async ({db, data:rawData, sessions}) => {
 		assert.equal(userData.password, incomingData.password, 'Password not match')
 		
 		sessions[userData.username] = rawData.sessionID
+		console.log(sessions)
 	} catch (e) {
 		console.log(e.stack, userData, incomingData)
 	}
