@@ -1,13 +1,19 @@
 const urlParse = require('url').parse,
+			cookie = require('cookie');
 			routes = require('./routes.js'),
 			dbClient = require('../mdl'),
-			{ getBody } = require('./util.js');
+			{ getBody, cookieParser } = require('../lib/util.js');
+
+
+const sessions = {};
 
 
 module.exports = async (req,res)=>{
 	
 	let { method, headers, url } = req
 	let { pathname, search, query } = urlParse(req.url, true);
+	let { _sid } = cookie.parse(headers['cookie']);
+	console.log(_sid)
 
 	try {
 		if (routes[pathname] && method === 'OPTIONS') {
@@ -18,7 +24,8 @@ module.exports = async (req,res)=>{
 			routes[pathname][method]({
 				res, 
 				queryString: JSON.stringify(query),
-				body: await getBody(req)
+				body: {...await getBody(req),...{sessionID: _sid}},
+				sessions
 			})
 			
 		} else {
@@ -30,5 +37,5 @@ module.exports = async (req,res)=>{
 		res.statusMessage = e.msg
 		res.end()
 	}
-	res.end('fail')
+	// res.end('fail')
 }

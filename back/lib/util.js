@@ -1,3 +1,4 @@
+const { createHash } = require('crypto');
 
 exports.getBody = req => {
 	return new Promise((resolve, reject)=> {
@@ -11,3 +12,11 @@ exports.getBody = req => {
 		  })
 	})
 }
+
+exports.hasher = (...strs) => {
+	let shasum = createHash('sha512');
+  shasum.update(`${strs.join('')}`);
+  return shasum.digest('base64');
+}
+
+exports.salt = "textarea-mission"

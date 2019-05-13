@@ -8,6 +8,5 @@ dbConnect()
 	.then(()=>app.listen(8080))
   .catch((e) => {
 		console.error(e);
-		// Always hard exit on a database connection error
 		process.exit(1);
 })
