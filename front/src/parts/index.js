@@ -3,7 +3,7 @@ import FileManager from './FileManager.js';
 import ChatRoom from './ChatRoom.js';
 
 export { 
-  NavBar as WebCoderNavBar,
+  NavBar,
 	FileManager,
 	ChatRoom
 };

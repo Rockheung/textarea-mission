@@ -12,6 +12,7 @@ exports.addUser = async ({db, data: rawData}) => {
 		let r = await db.collection('users').insertOne(data);
 		assert.equal(1, r.insertedCount);
 	} catch (e) {
-		console.log(e.stack, rawData)
+		console.error(e.stack, rawData)
+		throw e
 	}
 }

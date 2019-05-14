@@ -19,6 +19,7 @@ exports.signIn = async ({db, data:rawData, sessions}) => {
 		console.log(sessions)
 	} catch (e) {
 		console.log(e.stack, userData, incomingData)
+		throw e;
 	}
 }
 

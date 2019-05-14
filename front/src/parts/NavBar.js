@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Collapse,
@@ -15,52 +15,43 @@ import {
 
 import SigninModal from './SigninModal.js';
 
-export default class WebCoderNavBar extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isOpen: false
-    };
-  }
-  toggle = () => {
-    this.setState({
-      isOpen: !this.state.isOpen
-    });
-  }
-  render() {
-    return (
-      <div>
-        <Navbar color="light" light expand="md">
-          <NavbarBrand href="/">webCoder</NavbarBrand>
-          <NavbarToggler onClick={this.toggle} />
-          <Collapse isOpen={this.state.isOpen} navbar>
-            <Nav className="ml-auto" navbar>
-              <UncontrolledDropdown nav inNavbar>
-                <DropdownToggle nav caret>
-                  Options
-                </DropdownToggle>
-                <DropdownMenu right>
-                  <DropdownItem>
-                    Option 1
-                  </DropdownItem>
-                  <DropdownItem>
-                    Option 2
-                  </DropdownItem>
-                  <DropdownItem divider />
-                  <DropdownItem>
-                    Reset
-                  </DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown>
-              <NavItem>
-                <SigninModal buttonLabel="Sign in"/>
-              </NavItem>
-            </Nav>
-          </Collapse>
-        </Navbar>
-      </div>
-    );
-  }
+export default props => {
+  const [isOpen, setIsOpen] = useState(false);
+  const toggle = () => setIsOpen(!isOpen);
+	return <>
+		<Navbar color="light" light expand="md">
+			<NavbarBrand href="/">webCoder</NavbarBrand>
+			<NavbarToggler onClick={toggle} />
+			<Collapse isOpen={isOpen} navbar>
+				<Nav className="ml-auto" navbar>
+					<UncontrolledDropdown nav inNavbar>
+						<DropdownToggle nav caret>
+							Options
+						</DropdownToggle>
+						<DropdownMenu right>
+							<DropdownItem>
+								Option 1
+							</DropdownItem>
+							<DropdownItem>
+								Option 2
+							</DropdownItem>
+							<DropdownItem divider />
+							<DropdownItem>
+								Reset
+							</DropdownItem>
+						</DropdownMenu>
+					</UncontrolledDropdown>
+					<NavItem>
+						<SigninModal
+							buttonLabel="Sign in"
+							signIn={props.setUser}
+						/>
+					</NavItem>
+				</Nav>
+			</Collapse>
+		</Navbar>
+	</>
+
 }
 
 Navbar.propTypes = {

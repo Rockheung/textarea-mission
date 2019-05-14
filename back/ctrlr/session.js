@@ -4,11 +4,18 @@ const { signIn, signOut } = require("../mdl/session.js")
 
 // signin
 exports.post = async ({res,queryString, body, sessions, header}) => {
-	await signIn({db:getDB(),data:{...body,...header},sessions})
-	res.end(`session post ok: ${body.username} Sign in!`)
+	try {
+		await signIn({db:getDB(),data:{...body,...header},sessions})
+		res.write(JSON.stringify({status:`session post ok: ${body.username} Sign in!`}))
+		res.end()	
+	} catch (e) {
+		res.statusCode = 401;
+		res.write(JSON.stringify({status:e.message}));
+		res.end();
+	}	
 }
 
 // signout
 exports.delete = ({res,queryString, body}) => {
-	res.end('session delete ok:'+ queryString)
+	res.end({status:'session delete ok:'+ queryString})
 }
