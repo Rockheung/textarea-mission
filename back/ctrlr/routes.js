@@ -6,10 +6,14 @@ const static = require('./static.js'),
       ws = require('./ws.js');
 
 module.exports = {
-	'/': {
-		GET: static
-	},
+	// '/': {
+	// 	GET: static
+	// },
 	'/api/user': {
+		GET: (res)=>{
+			console.log(res)
+			res.end('ok')
+		},
 		POST: user.post
 	},
 	'/api/session': {

@@ -11,7 +11,7 @@ module.exports = async (req,res)=>{
 	
 	let { method, headers, url } = req
 	let { pathname, search, query } = urlParse(req.url, true);
-	let { _sid } = cookie.parse(headers['cookie']);
+	let { _sid } = cookie.parse(headers['cookie'] || '');
 	if (!_sid) {
 		res.setHeader('set-cookie', cookie.serialize("_sid", hasher(new Date())))
 	}
@@ -25,7 +25,8 @@ module.exports = async (req,res)=>{
 			routes[pathname][method]({
 				res, 
 				queryString: JSON.stringify(query),
-				body: {...await getBody(req),...{sessionID: _sid}},
+				header: {sessionID: _sid},
+				body: await getBody(req),
 				sessions
 			})
 			

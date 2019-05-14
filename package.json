@@ -4,9 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-		"db:init": "rm -rf data && mkdir data && touch data/.gitkeep && rm mongod.log mongod.log.*",
-    "predev": "pkill node && pkill mongod && mongod --config=mongod.conf & sleep 3",
-		"dev": "npm run --prefix back dev"
+		"delay": "sleep 1",
+		"kill:db": "pkill -f mongod && pkill -f node",
+		"db:init": "rm -rf data && mkdir data && touch data/.gitkeep && rm -f mongod.log mongod.log.*",
+    "db:run": " mongod --config=mongod.conf &",
+		"back:run": "npm run --prefix back dev &",
+		"front:run": "npm run -prefix front start",
+		"dev:all": "run-s kill:db db:init db:run delay back:run front:run"
   },
   "repository": {
     "type": "git",

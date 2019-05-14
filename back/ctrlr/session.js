@@ -3,8 +3,8 @@ const { signIn, signOut } = require("../mdl/session.js")
 
 
 // signin
-exports.post = async ({res,queryString, body, sessions}) => {
-	await signIn({db:getDB(),data:body,sessions})
+exports.post = async ({res,queryString, body, sessions, header}) => {
+	await signIn({db:getDB(),data:{...body,...header},sessions})
 	res.end(`session post ok: ${body.username} Sign in!`)
 }
 

@@ -1,6 +1,9 @@
 const { createHash } = require('crypto');
 
 exports.getBody = req => {
+	if (req.method === "GET") {
+		return null
+	}
 	return new Promise((resolve, reject)=> {
 		let body = [];
 		req

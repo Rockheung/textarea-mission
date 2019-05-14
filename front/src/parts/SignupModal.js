@@ -14,6 +14,7 @@ export default class SignupModal extends React.Component {
       modal: !prevState.modal
     }));
   }
+	
 
   render() {
     return (
