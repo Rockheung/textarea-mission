@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "predev": "mongod --config=mongod.conf &",
+		"db:init": "rm -rf data && mkdir data && touch data/.gitkeep && rm mongod.log mongod.log.*",
+    "db:run": "mongod --config=mongod.conf &",
 		"dev": "npm run --prefix back dev"
   },
   "repository": {
