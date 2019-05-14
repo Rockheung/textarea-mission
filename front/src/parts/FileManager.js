@@ -11,7 +11,7 @@ export default () => (
 			<Col sm="4">
 				<FolderTree />
 			</Col>
-			<Col sm="auto">
+			<Col sm="8">
 				<Editor />
 			</Col>
 		</Row>
