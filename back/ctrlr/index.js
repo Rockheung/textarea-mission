@@ -1,7 +1,6 @@
 const urlParse = require('url').parse,
 			cookie = require('cookie');
 			routes = require('./routes.js'),
-			dbClient = require('../mdl'),
 			{ getBody, cookieParser, hasher } = require('../lib/util.js');
 
 
