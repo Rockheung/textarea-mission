@@ -8,7 +8,9 @@ exports.signIn = async ({db, data:rawData, sessions}) => {
 			userData = null;
 	try {
 		assert(rawData.hasOwnProperty('username'), 'No username in body');
+		assert(rawData.username, 'username is falsy');
 		assert(rawData.hasOwnProperty('password'), 'No password in body');
+		assert(rawData.password, 'password is falsy');
 		incomingData = {...rawData, ...{password: hasher(rawData.password, salt)}}
 		userData = await db.collection('users').findOne({username:incomingData.username})
 		assert(userData, `username: ${incomingData.username} You must sign up first`)

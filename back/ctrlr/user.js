@@ -1,10 +1,10 @@
-const { getDB } = require("../mdl")
+// const { getDB } = require("../mdl")
 const { addUser } = require("../mdl/user.js")
 
 // signup
-exports.post = async ({res,queryString, body, header}) => {
+exports.post = async ({res,queryString, body, header, db}) => {
 	try {
-		await addUser({db: getDB(), data: {...body, ...header}})
+		await addUser({db, data: {...body, ...header}})
 		res.write(JSON.stringify({status:'user post ok:'+ queryString + JSON.stringify(body)}))
 		res.statusCode = 201;
 		res.end()	

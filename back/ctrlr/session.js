@@ -1,11 +1,11 @@
-const { getDB } = require("../mdl");
+// const { getDB } = require("../mdl");
 const { signIn, signOut } = require("../mdl/session.js")
 
 
 // signin
-exports.post = async ({res,queryString, body, sessions, header}) => {
+exports.post = async ({res,queryString, body, sessions, header, db}) => {
 	try {
-		await signIn({db:getDB(),data:{...body,...header},sessions})
+		await signIn({db,data:{...body,...header},sessions})
 		res.write(JSON.stringify({status:`session post ok: ${body.username} Sign in!`}))
 		res.end()	
 	} catch (e) {

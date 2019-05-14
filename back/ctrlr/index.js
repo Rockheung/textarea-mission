@@ -4,10 +4,7 @@ const urlParse = require('url').parse,
 			{ getBody, cookieParser, hasher } = require('../lib/util.js');
 
 
-const sessions = {};
-
-
-module.exports = async (req,res)=>{
+module.exports = async ({req,res,db,sessions})=>{
 	
 	let { method, headers, url } = req
 	let { pathname, search, query } = urlParse(req.url, true);
@@ -30,6 +27,7 @@ module.exports = async (req,res)=>{
 				queryString: JSON.stringify(query),
 				header: {sessionID: _sid},
 				body: await getBody(req),
+				db,
 				sessions
 			})
 			

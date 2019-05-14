@@ -28,6 +28,7 @@ export default props => {
 		if (fetching) {
 			fetch('/api/user', reqData)
 				.then(res=>res.json())
+			  .then(json=>console.log(json))
 				.then(()=>setFetching(false));	
 		}
 	}, [fetching])

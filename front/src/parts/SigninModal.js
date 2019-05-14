@@ -27,8 +27,17 @@ export default props => {
 		}
 		if (fetching) {
 			fetch('/api/session', reqData)
-				.then(res=>res.json())
-				.then(()=>setFetching(false));	
+				.then(res=>{
+				  if (res.status !== 200) {
+						throw new Error('Sign in fail');
+					}
+				  setFetching(false);
+				  setModal(false);
+				  props.signIn(username);
+				  return res.json();
+				})
+			  .then(json=>console.log(json))
+			  .catch(e=>console.log(e));
 		}
 	}, [fetching])
 	
