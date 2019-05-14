@@ -18,7 +18,10 @@ module.exports = async (req,res)=>{
 
 	try {
 		if (routes[pathname] && method === 'OPTIONS') {
-			res.writeHead(200, {'Access-Control-Allow-Origin': '*'})
+			res.setHeader('Access-Control-Allow-Origin', '*');
+			res.setHeader('Access-Control-Allow-Method', 'GET, POST, DELETE, PUT');
+			res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Accept');
+			res.statusCode = 200;
 			res.end('options ok')
 			
 		} else if (routes[pathname] && routes[pathname][method]) {

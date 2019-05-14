@@ -9,11 +9,23 @@ module.exports = {
 	// '/': {
 	// 	GET: static
 	// },
-	'/api/user': {
-		GET: (res)=>{
-			console.log(res)
-			res.end('ok')
+	'/api/dev': {
+		GET: ({res, header})=>{
+			console.log(header);
+			
+			// res.writeHead(200, {'Access-Control-Allow-Origin': '*'})
+			res.write(JSON.stringify({status:'ok'}));
+			res.end();
 		},
+		POST: ({res, header})=>{
+			console.log(header);
+			
+			// res.writeHead(200, {'Access-Control-Allow-Origin': '*'})
+			res.write(JSON.stringify({status:'ok'}));
+			res.end();
+		}
+	},
+	'/api/user': {
 		POST: user.post
 	},
 	'/api/session': {
