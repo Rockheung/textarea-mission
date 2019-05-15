@@ -14,14 +14,14 @@ module.exports = {
 			console.log(header);
 			
 			// res.writeHead(200, {'Access-Control-Allow-Origin': '*'})
-			res.write(JSON.stringify({status:'ok'}));
+			res.write(JSON.stringify({statusMsg:'ok'}));
 			res.end();
 		},
 		POST: ({res, header})=>{
 			console.log(header);
 			
 			// res.writeHead(200, {'Access-Control-Allow-Origin': '*'})
-			res.write(JSON.stringify({status:'ok'}));
+			res.write(JSON.stringify({statusMsg:'ok'}));
 			res.end();
 		}
 	},

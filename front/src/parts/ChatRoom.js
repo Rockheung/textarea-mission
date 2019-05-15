@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col } from 'reactstrap';
+import { Container, Row, Col, Input, InputGroupAddon, InputGroup, Button } from 'reactstrap';
 import io from "socket.io-client";
+
+const socket = io('/',{path:'/api/ws'});
 
 export default props => {
 	/* msgs:
@@ -11,28 +13,33 @@ export default props => {
 	 * }]
 	 */
 	const [msgs, setMsgs] = useState([]);
-	let inputMsg = null;
-	const socket = io()
-				.on('connect',()=>{})
-				.on('msg',data=>setMsgs([...msgs,data]));
+	const [inputMsg, setInputMsg] = useState(null);
+	
 	
 	const sendMsg = () => {
-		socket.emit('sendMsg', inputMsg);
-		inputMsg = null;
+		socket.emit('publicMsg', inputMsg);
+		setInputMsg(null);
 	}
-	const updateInputMsg =(e) => inputMsg = e.target.value;
+	const updateInputMsg =(e) => setInputMsg(e.target.value);
 	
 	// console.dir(socket)
 	
-	// useEffect(()=>{
-	// })
+	useEffect(()=>{
+		socket
+			.on('connect',()=>console.log(socket.id, "connected"))
+			.on('msg',data=>setMsgs([...msgs,data]));
+	},[])
 	
 	return <div>
 		<ul>
 			{msgs.map(msg=><li key>{msg.toString()}</li>)}
 		</ul>
-		<input onChange={updateInputMsg}></input>
-		<button onClick={sendMsg}>Say hi</button>
+		<InputGroup>
+			<Input placeholder="and..." onChange={updateInputMsg} />
+			<InputGroupAddon onClick={sendMsg} addonType="append">
+				<Button color="secondary">Send</Button>
+			</InputGroupAddon>
+		</InputGroup>
 		ChatRoom: {props.user || 'anonymous'}
 	</div>
 }

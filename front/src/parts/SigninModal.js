@@ -4,7 +4,7 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter, InputGroup, Input, 
 import SignupModal from './SignupModal.js';
 
 export default props => {
-	const [modal, setModal] = useState(false);
+	const [modal, setModal] = useState(true);
 	const [username, setUsername] = useState(null);
 	const [password, setPassword] = useState(null);
 	const [fetching, setFetching] = useState(true);
@@ -27,11 +27,11 @@ export default props => {
 		}
 		const getSession = async () => {
 			try {
-				const res = await fetch('/api/session', reqData)	
+				const res = await fetch('/api/session', reqData);
+				const { youAre, statusMsg } = await res.json();
 				if (res.status !== 200) {
-					throw new Error('Sign in fail');
-				}
-				const { youAre } = await res.json();
+					throw new Error(statusMsg);
+				}				
 				props.signIn(youAre || username)
 				setModal(false)
 			} catch (e) {

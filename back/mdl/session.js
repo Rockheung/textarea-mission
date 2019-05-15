@@ -3,7 +3,6 @@ const { ObjectId } = require('mongodb');
 const { hasher, salt } = require("../lib/util.js")
 
 exports.signIn = async ({db, data:rawData, sessions}) => {
-	// console.log(db)
 	let incomingData = null,
 			userData = null;
 	try {
