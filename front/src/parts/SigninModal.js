@@ -29,7 +29,7 @@ export default props => {
 			try {
 				const res = await fetch('/api/session', reqData)	
 				if (res.status !== 200) {
-					throw new Error();
+					throw new Error('Sign in fail');
 				}
 				const { youAre } = await res.json();
 				props.signIn(youAre || username)

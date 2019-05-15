@@ -16,9 +16,7 @@ exports.signIn = async ({db, data:rawData, sessions}) => {
 		assert(userData, `username: ${incomingData.username} You must sign up first`)
 		assert.equal(userData.password, incomingData.password, 'Password not match')
 		
-		// console.log(rawData.sessionID)
-		sessions[rawData.sessionID] = userData.username
-		console.log(sessions)
+		return userData.username
 	} catch (e) {
 		console.log(e.stack, userData, incomingData)
 		throw e;

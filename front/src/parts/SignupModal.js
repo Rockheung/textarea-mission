@@ -29,7 +29,7 @@ export default props => {
 			try {
 				const res = await fetch('/api/user', reqData)	
 				if (res.status !== 201) {
-					throw new Error();
+					throw new Error('Sign up fail');
 				}
 				setModal(false)
 			} catch (e) {
