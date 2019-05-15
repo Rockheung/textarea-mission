@@ -15,7 +15,7 @@ export default props => {
 	const signUp = () => setFetching(true);
 	
 	useEffect(()=>{
-		let reqData = {
+		const reqData = {
 			method: 'POST',
 			headers: {
 				"Accept": "application/json",
@@ -25,11 +25,24 @@ export default props => {
 				username, password
 			})
 		}
+		const createUser = async () => {
+			try {
+				const res = await fetch('/api/user', reqData)	
+				if (res.status !== 201) {
+					throw new Error();
+				}
+				setModal(false)
+			} catch (e) {
+				console.error(e);
+			}
+			
+			setUsername(null)
+			setPassword(null)
+			setRePassword(null)
+			setFetching(false)
+		}
 		if (fetching) {
-			fetch('/api/user', reqData)
-				.then(res=>res.json())
-			  .then(json=>console.log(json))
-				.then(()=>setFetching(false));	
+			createUser()
 		}
 	}, [fetching])
 	

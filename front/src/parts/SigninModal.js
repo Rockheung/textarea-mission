@@ -15,7 +15,7 @@ export default props => {
 	const signIn = () => setFetching(true);
 	
 	useEffect(()=>{
-		let reqData = {
+		const reqData = {
 			method: 'POST',
 			headers: {
 				"Accept": "application/json",
@@ -25,19 +25,25 @@ export default props => {
 				username, password
 			})
 		}
+		const getSession = async () => {
+			try {
+				const res = await fetch('/api/session', reqData)	
+				if (res.status !== 200) {
+					throw new Error();
+				}
+				const { youAre = null } = res.json();
+				props.signIn(youAre || username)
+				setModal(false)
+			} catch (e) {
+				console.error(e);
+			}
+			
+			setUsername(null)
+			setPassword(null)
+			setFetching(false)
+		}
 		if (fetching) {
-			fetch('/api/session', reqData)
-				.then(res=>{
-				  if (res.status !== 200) {
-						throw new Error('Sign in fail');
-					}
-				  setFetching(false);
-				  setModal(false);
-				  props.signIn(username);
-				  return res.json();
-				})
-			  .then(json=>console.log(json))
-			  .catch(e=>console.log(e));
+			getSession()
 		}
 	}, [fetching])
 	
