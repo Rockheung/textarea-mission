@@ -7,7 +7,7 @@ export default props => {
 	const [modal, setModal] = useState(false);
 	const [username, setUsername] = useState(null);
 	const [password, setPassword] = useState(null);
-	const [fetching, setFetching] = useState(false);
+	const [fetching, setFetching] = useState(true);
 	
   const toggle = () => setModal(!modal);
 	const idChange = (e) => setUsername(e.target.value);
@@ -31,7 +31,7 @@ export default props => {
 				if (res.status !== 200) {
 					throw new Error();
 				}
-				const { youAre = null } = res.json();
+				const { youAre } = await res.json();
 				props.signIn(youAre || username)
 				setModal(false)
 			} catch (e) {
