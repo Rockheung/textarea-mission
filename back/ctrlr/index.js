@@ -1,7 +1,7 @@
-const urlParse = require('url').parse,
-			cookie = require('cookie');
-			routes = require('./routes.js'),
-			{ getBody, cookieParser, hasher } = require('../lib/util.js');
+const urlParse = require('url').parse;
+const cookie = require('cookie');
+const routes = require('./routes.js');
+const { getBody, cookieParser, hasher } = require('../lib/util.js');
 
 
 module.exports = async ({req,res,db,sessions})=>{

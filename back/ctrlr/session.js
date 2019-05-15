@@ -12,8 +12,7 @@ exports.post = async ({res,queryString, body, sessions, header, db}) => {
 				res.end();
 				return
 			}
-			throw new Error('Auto login failed')
-			
+			throw new Error('Auto login failed');
 		}
 		
 		let user = await signIn({db,data:{...body,...header},sessions})
