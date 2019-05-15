@@ -6,7 +6,7 @@ const { signIn, signOut } = require("../mdl/session.js")
 exports.post = async ({res,queryString, body, sessions, header, db}) => {
 	try {
 		if (sessions[header.sessionID] && !body.username) {
-			res.status = 200;
+			res.statusCode = 200;
 			res.write(JSON.stringify({status:`keep session`, youAre: `${sessions[header.sessionID]}`}));
 			res.end();
 			return
@@ -14,12 +14,12 @@ exports.post = async ({res,queryString, body, sessions, header, db}) => {
 		
 		let user = await signIn({db,data:{...body,...header},sessions})
 		sessions[header.sessionID] = user;
-		res.status = 200;
+		res.statusCode = 200;
 		res.write(JSON.stringify({status:`session post ok: ${body.username} Sign in!`}))
 		res.end()	
 		
 	} catch (e) {
-		res.status = 401;
+		res.statusCode = 401;
 		res.write(JSON.stringify({status:e.message}));
 		res.end();
 	}	

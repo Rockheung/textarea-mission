@@ -12,7 +12,7 @@ dbConnect()
 		const app = http.createServer((req,res)=>handler({req,res,db,sessions}))
 		const io = createSocketIO(app)
 	  app.listen(8080);
-	  io.on('connection', sock=>wsHandler({sock, sessions}));
+	  io.on('connection', socket=>wsHandler({io,socket, sessions}));
   })
   .then(()=>console.log("Connected successfully"))
   .catch((e) => {
