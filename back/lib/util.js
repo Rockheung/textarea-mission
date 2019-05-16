@@ -1,4 +1,6 @@
 const { createHash } = require('crypto');
+const cookie = require('cookie');
+
 
 exports.getBody = req => {
 	if (req.method === "GET") {
@@ -23,3 +25,20 @@ exports.hasher = (...strs) => {
 }
 
 exports.salt = "textarea-mission"
+
+
+exports.getKeysFromValue = function(_value) {
+	let _keys = [];
+	this.forEach((value,key)=>{
+		if (_value === value) {
+			_keys.push(key)
+		}
+	})
+	return _keys;
+}
+
+exports.customGenerateId = ({req,gen}) => {
+	let _hash = gen(req)
+	let { _sid } = cookie.parse(req.headers['cookie'] || '');
+	return _sid || this.hasher(new Date(),_hash);
+}

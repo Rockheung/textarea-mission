@@ -4,7 +4,7 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter, InputGroup, Input, 
 import SignupModal from './SignupModal.js';
 
 export default props => {
-	const [modal, setModal] = useState(true);
+	const [modal, setModal] = useState(false);
 	const [username, setUsername] = useState(null);
 	const [password, setPassword] = useState(null);
 	const [fetching, setFetching] = useState(true);
@@ -30,6 +30,7 @@ export default props => {
 				const res = await fetch('/api/session', reqData);
 				const { youAre, statusMsg } = await res.json();
 				if (res.status !== 200) {
+					setModal(true)
 					throw new Error(statusMsg);
 				}				
 				props.signIn(youAre || username)
@@ -53,10 +54,10 @@ export default props => {
 			<ModalHeader toggle={toggle}>Sign In</ModalHeader>
 			<ModalBody>
 				<FormGroup>
-					<Input type="email" name="email" id="exampleEmail" placeholder="email" onChange={idChange} />
+					<Input type="email" name="email" placeholder="email" onChange={idChange} value={username} />
 				</FormGroup>
 				<FormGroup>
-					<Input type="password" name="password" id="examplePassword" placeholder="password" onChange={pwChange} />
+					<Input type="password" name="password" placeholder="password" onChange={pwChange} value={password} />
 				</FormGroup>
 			</ModalBody>
 			<ModalFooter>

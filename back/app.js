@@ -3,10 +3,11 @@ const handler = require('./ctrlr');
 const dbConnect = require('./mdl');
 const createSocketIO = require('socket.io');
 const wsHandler = require('./ctrlr/ws.js');
-const { hasher } = require('./lib/util.js');
-const cookie = require('cookie');
+const { hasher, getKeysFromValue, customGenerateId } = require('./lib/util.js');
 
-const sessions = {}
+const sessions = new Map();
+
+// sessions.getSidsFromUsername = getKeysFromValue
 
 const socketIoOps = {
 	path: '/api/ws',
@@ -14,14 +15,8 @@ const socketIoOps = {
 	cookiePath: '/api'
 }
 
-const customGenerateId = ({req,gen}) => {
-		let _hash = gen(req)
-		let { _sid } = cookie.parse(req.headers['cookie'] || '');
-		return _sid || hasher(new Date(),_hash);
-	}
-
 dbConnect()
-	.then(db=> {
+	.then(db => {
 		const app = http.createServer((req,res)=>handler({req,res,db,sessions}))
 		const io = createSocketIO(app,socketIoOps)
 		let _genId = io.engine.generateId

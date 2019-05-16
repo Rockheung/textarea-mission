@@ -52,13 +52,13 @@ export default props => {
 			<ModalHeader toggle={toggle}>Sign Up Now</ModalHeader>
 			<ModalBody>
 				<FormGroup>
-					<Input type="email" name="email" placeholder="email" onChange={idChange} />
+					<Input type="email" name="email" placeholder="email" onChange={idChange} value={username} />
 				</FormGroup>
 				<FormGroup>
-					<Input type="password" name="password" placeholder="password" onChange={pwChange} />
+					<Input type="password" name="password" placeholder="password" onChange={pwChange} value={password} />
 				</FormGroup>
 				<FormGroup>
-					<Input type="password" name="re-password" placeholder="password again" onChange={repwChange} />
+					<Input type="password" name="re-password" placeholder="password again" onChange={repwChange} value={repassword} />
 				</FormGroup>
 			</ModalBody>
 			<ModalFooter>
