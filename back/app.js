@@ -3,7 +3,7 @@ const handler = require('./ctrlr');
 const dbConnect = require('./mdl');
 const createSocketIO = require('socket.io');
 const wsHandler = require('./ctrlr/ws.js');
-const { hasher, getKeysFromValue, customGenerateId } = require('./lib/util.js');
+const { hasher, getKeysFromValue, customGenerateId, wsAuth } = require('./lib/util.js');
 
 const sessions = new Map();
 
@@ -19,6 +19,7 @@ dbConnect()
 	.then(db => {
 		const app = http.createServer((req,res)=>handler({req,res,db,sessions}))
 		const io = createSocketIO(app,socketIoOps)
+		io.use((socket,next)=>wsAuth({socket,next,sessions}));
 		let _genId = io.engine.generateId
 		io.engine.generateId = req => customGenerateId({req,gen:_genId})
 	  io.on('connection', socket=>wsHandler({io,socket, sessions}));

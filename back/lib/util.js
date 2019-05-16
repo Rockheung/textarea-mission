@@ -42,3 +42,13 @@ exports.customGenerateId = ({req,gen}) => {
 	let { _sid } = cookie.parse(req.headers['cookie'] || '');
 	return _sid || this.hasher(new Date(),_hash);
 }
+
+exports.wsAuth = ({socket, next, sessions}) => {
+	let { headers } = socket.request
+	let { _sid } = cookie.parse(headers['cookie'] || '');
+	
+  if (sessions.has(_sid)) {
+    return next();
+  }
+  return next(new Error('authentication error'));
+}
