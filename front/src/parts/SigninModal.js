@@ -5,8 +5,8 @@ import SignupModal from './SignupModal.js';
 
 export default props => {
 	const [modal, setModal] = useState(false);
-	const [username, setUsername] = useState(null);
-	const [password, setPassword] = useState(null);
+	const [username, setUsername] = useState('');
+	const [password, setPassword] = useState('');
 	const [fetching, setFetching] = useState(true);
 	
   const toggle = () => setModal(!modal);
@@ -39,8 +39,8 @@ export default props => {
 				console.error(e);
 			}
 			
-			setUsername(null)
-			setPassword(null)
+			setUsername('')
+			setPassword('')
 			setFetching(false)
 		}
 		if (fetching) {

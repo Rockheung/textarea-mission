@@ -3,9 +3,9 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter, InputGroup, Input, 
 
 export default props => {
 	const [modal, setModal] = useState(false);
-	const [username, setUsername] = useState(null);
-	const [password, setPassword] = useState(null);
-	const [repassword, setRePassword] = useState(null);
+	const [username, setUsername] = useState('');
+	const [password, setPassword] = useState('');
+	const [repassword, setRePassword] = useState('');
 	const [fetching, setFetching] = useState(false);
 	
   const toggle = () => setModal(!modal);
@@ -36,9 +36,9 @@ export default props => {
 				console.error(e);
 			}
 			
-			setUsername(null)
-			setPassword(null)
-			setRePassword(null)
+			setUsername('')
+			setPassword('')
+			setRePassword('')
 			setFetching(false)
 		}
 		if (fetching) {

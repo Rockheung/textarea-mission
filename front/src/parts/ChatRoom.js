@@ -37,15 +37,15 @@ export default props => {
 	},[props.user])
 	
 	return <div>
-		<ul>
-			{msgs.map(message=><li>{`${message.from}: ${message.msg}`}</li>)}
-		</ul>
+		You Are: {props.user || 'anonymous'}
 		<InputGroup>
 			<Input placeholder="and..." onChange={updateInputMsg} value={inputMsg} />
 			<InputGroupAddon onClick={sendMsg} addonType="append">
 				<Button color="secondary">Send</Button>
 			</InputGroupAddon>
 		</InputGroup>
-		You Are: {props.user || 'anonymous'}
+		<ul>
+			{msgs.map(message=><li>{`${message.from}: ${message.msg}`}</li>)}
+		</ul>		
 	</div>
 }
