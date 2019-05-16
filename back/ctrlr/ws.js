@@ -14,7 +14,7 @@ module.exports = ({io,socket,sessions}) => {
 		  if (sessions.has(socketId)) {
 				let whoSent = sessions.get(socketId);
 				console.log(whoSent, to)
-			  io.to(to).emit('receiveMsg',{
+			  io.to(to).to(whoSent).emit('receiveMsg',{
 				  from: whoSent,
 					msg
 			  })

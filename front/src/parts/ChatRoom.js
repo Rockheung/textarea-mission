@@ -24,6 +24,7 @@ export default props => {
 	}
 	
 	const updateInputMsg =(e) => setInputMsg(e.target.value);
+	const updateToWhom = e => setToWhom(e.currentTarget.dataset.user);
 	
 	// console.dir(socket)
 	
@@ -37,7 +38,7 @@ export default props => {
 	},[props.user])
 	
 	return <div>
-		You Are: {props.user || 'anonymous'}
+		You Are: {props.user || 'anonymous'}, and send to {toWhom}
 		<InputGroup>
 			<Input placeholder="and..." onChange={updateInputMsg} value={inputMsg} />
 			<InputGroupAddon onClick={sendMsg} addonType="append">
@@ -45,7 +46,12 @@ export default props => {
 			</InputGroupAddon>
 		</InputGroup>
 		<ul>
-			{msgs.map(message=><li>{`${message.from}: ${message.msg}`}</li>)}
+			{msgs.map(message => <li
+				data-user={message.from}
+				onClick={updateToWhom}
+				>
+				{`${message.from}: ${message.msg}`}
+			  </li>)}
 		</ul>		
 	</div>
 }
