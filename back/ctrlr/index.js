@@ -10,7 +10,9 @@ module.exports = async ({req,res,db,sessions})=>{
 	let { pathname, search, query } = urlParse(req.url, true);
 	let { _sid } = cookie.parse(headers['cookie'] || '');
 	if (!_sid) {
-		res.setHeader('set-cookie', cookie.serialize("_sid", hasher(new Date())))
+		res.setHeader('set-cookie', cookie.serialize("_sid", hasher(new Date()), {
+			httpOnly: true
+		}))
 	}
 
 	try {

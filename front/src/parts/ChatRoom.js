@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Input, InputGroupAddon, InputGroup, Button } from 'reactstrap';
+import { Container, Row, Col, Input, InputGroupAddon, InputGroup, Button, ListGroup, ListGroupItem } from 'reactstrap';
 import io from "socket.io-client";
 
 
@@ -19,7 +19,9 @@ export default ({user}) => {
 	const [toWhom, setToWhom] = useState(null)
 	
 	socket
-		.on('receiveMsg',data=> setMsgs([...msgs,data]))
+		.on('receiveMsg',data=> console.log(data))
+				
+				//setMsgs([data,...msgs])
 	
 	
 	const sendMsg = () => {
@@ -33,7 +35,6 @@ export default ({user}) => {
 	
 	const updateInputMsg =(e) => setInputMsg(e.target.value);
 	const updateToWhom = e => setToWhom(e.currentTarget.dataset.user);
-	// Not working yet
 	const initToWhom = e => {
 		if (e.key === 'Escape'){
 			setToWhom(null);
@@ -42,7 +43,13 @@ export default ({user}) => {
 		}
 	};
 	
-	// console.dir(socket)
+	const makeListItems = (message,idx) => <ListGroupItem
+		key={idx}
+		data-user={message.from}
+		onClick={updateToWhom}
+		>
+			<b>{`${message.from}`}</b>{`: ${message.msg}`}
+		</ListGroupItem>
 	
 	useEffect(()=>{
 		if (user) {
@@ -58,17 +65,12 @@ export default ({user}) => {
 		You Are: <b>{user || DEFAULT_USER}</b>, and send to <b>{toWhom || DEFAULT_ROOM}</b>
 		<InputGroup>
 			<Input placeholder="and..." onChange={updateInputMsg} onKeyUp={initToWhom} value={inputMsg} />
-			<InputGroupAddon onClick={sendMsg} addonType="append">
-				<Button color="secondary">Send</Button>
+			<InputGroupAddon addonType="append">
+				<Button onClick={sendMsg} color="secondary">Send</Button>
 			</InputGroupAddon>
 		</InputGroup>
-		<ul>
-			{msgs.map(message => <li
-				data-user={message.from}
-				onClick={updateToWhom}
-				>
-				{`${message.from}: ${message.msg}`}
-			  </li>)}
-		</ul>		
+		<ListGroup>
+			{msgs.map(makeListItems)}
+		</ListGroup>		
 	</div>
 }
