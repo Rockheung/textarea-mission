@@ -1,17 +1,17 @@
 
 
 exports.get = ({res,queryString, body, db}) => {
-	res.end('file get ok:'+ queryString)
+	res.end(JSON.stringify({statusMsg:'file get ok:'+ queryString}))
 }
 
 exports.post = ({res,queryString, body, db}) => {
-	res.end('file post ok:'+ queryString+ body)
+	res.end(JSON.stringify({statusMsg:'file post ok:'+ queryString}))
 }
 
 exports.put = ({res,queryString, body, db}) => {
-	res.end('file put ok:'+ queryString+body)
+	res.end(JSON.stringify({statusMsg:'file put ok:'+ queryString+body}))
 }
 
 exports.delete = ({res,queryString, body, db}) => {
-	res.end('file delete ok:'+ queryString)
+	res.end(JSON.stringify({statusMsg:'file delete ok:'+ queryString}))
 }

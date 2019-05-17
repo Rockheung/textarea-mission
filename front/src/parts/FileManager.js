@@ -10,6 +10,27 @@ export default props => {
 	
 	const [files, setFiles] = useState([]);
 	
+	useEffect(()=>{
+		const sendFiles = async files => {
+			if (files.length === 0) return null;
+			let formFiles = new FormData();
+			for (let i=0; i<files.length; i++) {
+				formFiles.append(files[i].name,files[i])
+			}
+			
+			const ops = {
+				method: 'POST',
+				body: formFiles
+			}
+			let res = await fetch('/api/file',ops)
+			setFiles([])
+			console.log(res)
+		}
+		
+		sendFiles(files)
+		
+	},[files])
+	
 	return <Container fluid>
 		{ "File Manager"}
 		<Row>

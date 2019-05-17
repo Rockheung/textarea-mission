@@ -12,6 +12,6 @@ export default props => {
 	}
 	return <>
 	  <input onChange={updateFiles} ref={inputEle} type={"file"} style={{ display: "none"}} multiple/>
-	  <Button onClick={fileSelect} >File(s) Upload</Button>
+	  <Button onClick={fileSelect} >Select Files...</Button>
 	</>	
 }

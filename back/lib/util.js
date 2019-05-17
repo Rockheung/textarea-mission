@@ -1,12 +1,30 @@
 const { createHash } = require('crypto');
 const cookie = require('cookie');
+const formidable = require('formidable');
 
+const getFiles = (err, fields, files) => {
+      res.writeHead(200, {'content-type': 'text/plain'});
+      res.write('received upload:\n\n');
+      res.end(util.inspect({fields: fields, files: files}));
+    }
 
 exports.getBody = req => {
 	if (req.method === "GET" || req.method === "DELETE") {
 		return null
-	}
-	return new Promise((resolve, reject)=> {
+	} else if (req.headers['content-type'].startsWith('multipart/form-data')) {
+		const form = new formidable.IncomingForm()
+		return new Promise((resolve, reject)=> {
+			form.parse(req, (err, fields, files) => {
+				if (err) {
+					reject(err)
+					return
+				}
+				console.log(files)
+				resolve(files)
+			})
+		})
+	} else if (req.headers['content-type'].startsWith('application/json')){
+		return new Promise((resolve, reject)=> {
 		let body = [];
 		req
 		  .on('error', err => reject(err))
@@ -15,7 +33,9 @@ exports.getBody = req => {
 			  body = Buffer.concat(body).toString()
 				resolve(JSON.parse(body))
 		  })
-	})
+		})
+	}
+	
 }
 
 exports.hasher = (...strs) => {
