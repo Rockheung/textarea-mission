@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Container, Row, Col, Input, InputGroupAddon, InputGroup, Button, ListGroup, ListGroupItem } from 'reactstrap';
 import io from "socket.io-client";
 
 
-const socket = io('/',{
-	path:'/api/ws'
-})
-.on('reconnecting', ()=>console.log('reconnecting'))
+let socket = io('/',{
+	path:'/api/ws',
+	autoConnect: false
+});
+
 
 const DEFAULT_ROOM = 'public';
 const DEFAULT_USER = 'anonymous';
@@ -16,14 +17,12 @@ export default ({user}) => {
 
 	const [msgs, setMsgs] = useState([]);
 	const [inputMsg, setInputMsg] = useState('');
-	const [toWhom, setToWhom] = useState(null)
+	const [toWhom, setToWhom] = useState(null);	
 	
-	socket
-		.on('receiveMsg',data=> console.log(data))
-				
-				//setMsgs([data,...msgs])
+	const updateInputMsg =(e) => setInputMsg(e.target.value);
+	const updateToWhom = e => setToWhom(e.currentTarget.dataset.user);
 	
-	
+
 	const sendMsg = () => {
 		socket.emit('sendMsg', {
 			from: socket.id,
@@ -33,8 +32,6 @@ export default ({user}) => {
 		setInputMsg('');
 	}
 	
-	const updateInputMsg =(e) => setInputMsg(e.target.value);
-	const updateToWhom = e => setToWhom(e.currentTarget.dataset.user);
 	const initToWhom = e => {
 		if (e.key === 'Escape'){
 			setToWhom(null);
@@ -48,16 +45,26 @@ export default ({user}) => {
 		data-user={message.from}
 		onClick={updateToWhom}
 		>
-			<b>{`${message.from}`}</b>{`: ${message.msg}`}
+			<b>{message.from}</b>: {message.msg}
 		</ListGroupItem>
+	
+	const updateMsgs 
+		= useCallback(data=> setMsgs([data,...msgs]),[msgs])
+	
+	socket
+	  .off('receiveMsg')
+		.on('receiveMsg',updateMsgs)
 	
 	useEffect(()=>{
 		if (user) {
 			console.log('user:',user,'login')
 			socket
-			  .close()
+			  // .close()
 			  .open()
-		    .emit('joinRoom',socket.id);
+		    .emit('joinRoom',socket.id)
+				.on('reconnecting', ()=>console.log('reconnecting'))
+		} else {
+			socket.close()
 		}
 	},[user])
 	
