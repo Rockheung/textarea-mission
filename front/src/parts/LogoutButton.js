@@ -12,7 +12,7 @@ export default props => {
 		try {
 			if (fetchingStatus) {
 				const res = await fetch('/api/session', {method: 'DELETE'});
-        console.log(await res.status)
+        console.log(await res)
 				setFetching(false)
 				props.logout(null)
 				console.log('logout!')
@@ -20,7 +20,7 @@ export default props => {
 				throw new Error('Logout is proceeding')
 			}	
 		} catch (e) {
-			console.log(e)
+			console.log(e.message)
 		}
 		
 	}

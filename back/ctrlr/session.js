@@ -1,5 +1,6 @@
 // const { getDB } = require("../mdl");
 const { signIn, signOut } = require("../mdl/session.js")
+const cookie = require('cookie');
 
 
 // signin
@@ -31,6 +32,10 @@ exports.post = async ({res,queryString, body, sessions, header, db}) => {
 // signout
 exports.delete = async ({res,queryString,sessions, header,  body}) => {
 	try {
+	  res.setHeader('Set-Cookie', cookie.serialize('_sid', header.sessionID, {
+			expires: new Date(0),
+			httpOnly: true
+		}));
 		if (sessions.has(header.sessionID)) {
 		  sessions.delete(header.sessionID);
 			res.statusCode = 200;
