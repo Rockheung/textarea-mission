@@ -6,17 +6,20 @@ import io from "socket.io-client";
 const socket = io('/',{
 	path:'/api/ws'
 })
+.on('reconnecting', ()=>console.log('reconnecting'))
+
 const DEFAULT_ROOM = 'public';
 const DEFAULT_USER = 'anonymous';
 
 
-export default props => {
+export default ({user}) => {
 
 	const [msgs, setMsgs] = useState([]);
 	const [inputMsg, setInputMsg] = useState('');
 	const [toWhom, setToWhom] = useState(null)
 	
-	socket.on('receiveMsg',data=> setMsgs([...msgs,data]));
+	socket
+		.on('receiveMsg',data=> setMsgs([...msgs,data]))
 	
 	
 	const sendMsg = () => {
@@ -42,13 +45,17 @@ export default props => {
 	// console.dir(socket)
 	
 	useEffect(()=>{
-		if (props.user) {
-		  socket.emit('joinRoom',socket.id);
-		}		
-	},[props.user])
+		if (user) {
+			console.log('user:',user,'login')
+			socket
+			  .close()
+			  .open()
+		    .emit('joinRoom',socket.id);
+		}
+	},[user])
 	
 	return <div>
-		You Are: <b>{props.user || DEFAULT_USER}</b>, and send to <b>{toWhom || DEFAULT_ROOM}</b>
+		You Are: <b>{user || DEFAULT_USER}</b>, and send to <b>{toWhom || DEFAULT_ROOM}</b>
 		<InputGroup>
 			<Input placeholder="and..." onChange={updateInputMsg} onKeyUp={initToWhom} value={inputMsg} />
 			<InputGroupAddon onClick={sendMsg} addonType="append">

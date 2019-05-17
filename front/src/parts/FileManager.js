@@ -4,7 +4,7 @@ import { Container, Row, Col } from 'reactstrap';
 import FolderTree from './FolderTree.js';
 import Editor from './Editor.js';
 
-export default () => (
+export default props => (
 	<Container fluid>
 		{ "File Manager"}
 		<Row>

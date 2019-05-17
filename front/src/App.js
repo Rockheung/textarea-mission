@@ -7,7 +7,10 @@ import {
 	ChatRoom
 } from './parts';
 // import logo from './logo.svg';
-import './App.css';
+import styles from './App.module.scss';
+
+
+console.log(styles)
 
 function App() {
 	const [user, setUser] = useState(null);
