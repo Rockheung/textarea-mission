@@ -29,6 +29,17 @@ exports.post = async ({res,queryString, body, sessions, header, db}) => {
 }
 
 // signout
-exports.delete = ({res,queryString, body}) => {
-	res.end({statusMsg:'session delete ok:'+ queryString})
+exports.delete = async ({res,queryString,sessions, header,  body}) => {
+	try {
+		if (sessions.has(header.sessionID)) {
+		  sessions.delete(header.sessionID);
+			res.statusCode = 200;
+			res.end()
+			return
+		} 
+		throw 204
+	} catch (e) {
+		res.statusCode = e;
+		res.end();
+	}
 }

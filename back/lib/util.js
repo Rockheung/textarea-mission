@@ -3,7 +3,7 @@ const cookie = require('cookie');
 
 
 exports.getBody = req => {
-	if (req.method === "GET") {
+	if (req.method === "GET" || req.method === "DELETE") {
 		return null
 	}
 	return new Promise((resolve, reject)=> {

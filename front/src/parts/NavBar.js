@@ -11,9 +11,11 @@ import {
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem } from 'reactstrap';
+  DropdownItem,
+  Button } from 'reactstrap';
 
 import SigninModal from './SigninModal.js';
+import LogoutButton from './LogoutButton.js';
 
 export default props => {
   const [isOpen, setIsOpen] = useState(false);
@@ -42,10 +44,15 @@ export default props => {
 						</DropdownMenu>
 					</UncontrolledDropdown>
 					<NavItem>
-						<SigninModal
-							buttonLabel="Sign in"
-							signIn={props.setUser}
-						/>
+						{props.user
+							? <LogoutButton
+									logout={props.setUser}
+								>Log out</LogoutButton>
+						  : <SigninModal
+							    buttonLabel="Log in"
+							    signIn={props.setUser}
+						    />}
+						
 					</NavItem>
 				</Nav>
 			</Collapse>

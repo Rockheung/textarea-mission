@@ -17,6 +17,7 @@ function App() {
 	
   return <>
 		<NavBar
+			user={user}
 			setUser={setUser}
 		/>
 		<Container fluid>
