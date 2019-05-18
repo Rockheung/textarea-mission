@@ -29,14 +29,14 @@ export default props => {
 			try {
 				const res = await fetch('/api/session', reqData);
 				const { youAre, statusMsg } = await res.json();
-				if (res.status !== 200) {
+				if (!res.ok) {
 					setModal(true)
 					throw new Error(statusMsg);
 				}				
 				props.signIn(youAre || username)
 				setModal(false)
 			} catch (e) {
-				console.error(e);
+				console.log(e);
 			}
 			
 			setUsername('')

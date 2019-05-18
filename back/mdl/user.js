@@ -4,7 +4,7 @@ const { hasher, salt } = require("../lib/util.js")
 exports.addUser = async ({db, data: rawData}) => {
 	// console.log(db)
 	try {
-		let data = {...rawData, ...{password: hasher(rawData.password,salt)}}
+		let data = {...rawData, ...{password: hasher(rawData.password,salt), chat_msgs:[]}}
 		assert(data.hasOwnProperty('username'), 'No username in body');
 		assert(rawData.username, 'username is falsy');
 		assert(data.hasOwnProperty('password'), 'No password in body');

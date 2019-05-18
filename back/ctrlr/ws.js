@@ -1,22 +1,20 @@
+const { saveChat } = require('../mdl/chat.js');
 
-module.exports = ({io,socket,sessions}) => {
-	 
-	console.log('User connected')
+
+module.exports = ({io,socket,sessions,db}) => {
 	socket
-	  .join('public', ()=> {})
+	  .join('public', ()=> console.log('User connected:', socket.id, sessions))
 	  .on('joinRoom', (id) => {
 		  if (sessions.has(id)) {
 				socket.join(sessions.get(id))
 			}			
 	  })
 	  .on('sendMsg',({from:socketId,to,msg})=>{
-		  console.log(sessions,socketId,msg)
 		  if (sessions.has(socketId)) {
 				let whoSent = sessions.get(socketId);
-			  io.to(to).to(whoSent).emit('receiveMsg',{
-				  from: whoSent,
-					msg
-			  })
+				let data = { from: whoSent, to, msg }	  
+			  io.to(to).emit('receiveMsg',data)
+				saveChat({db,data})
 			}
 		  
 	})

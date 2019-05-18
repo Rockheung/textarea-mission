@@ -8,20 +8,21 @@ export default props => {
 	const logoutClick = () => setFetching(true)
 	
 	const logoutRequest = async (fetchingStatus) => {
-	  console.log('fethcing?')
 		try {
 			if (fetchingStatus) {
 				const res = await fetch('/api/session', {method: 'DELETE'});
-				setFetching(false)
+				if (res.ok) {
+					setFetching(false)
+					props.logout(null)
+				}
         if (res.status === 204){
 					throw new Error('You havn\'t logged in')
 				}
-				props.logout(null)
 			} else {
 				throw new Error('Logout is proceeding')
 			}	
 		} catch (e) {
-			console.error(e.message)
+			console.log(e.message)
 		}
 		
 	}

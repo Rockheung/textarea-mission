@@ -22,10 +22,10 @@ dbConnect()
 		io.use((socket,next)=>wsAuth({socket,next,sessions}));
 		let _genId = io.engine.generateId
 		io.engine.generateId = req => customGenerateId({req,gen:_genId})
-	  io.on('connection', socket=>wsHandler({io,socket, sessions}));
+	  io.on('connection', socket=>wsHandler({io,socket, sessions, db}));
 	  app.listen(8080);
   })
-  .then(()=>console.log("Connected successfully"))
+  .then(()=>console.log("Server started successfully."))
   .catch((e) => {
 		console.error(e.stack);
 		process.exit(1);
