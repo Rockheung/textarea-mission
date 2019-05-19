@@ -49,7 +49,7 @@ export default ({user}) => {
 		</ListGroupItem>
 	
 	const updateMsgs 
-		= useCallback(data=> setMsgs([data,...msgs]),[msgs])
+		= useCallback(data=> setMsgs([data,...msgs]),[msgs]);
 	
 	socket
 	  .off('receiveMsg')
@@ -61,7 +61,7 @@ export default ({user}) => {
 			socket
 			  // .close()
 			  .open()
-		    .emit('joinRoom',socket.id)
+			  .emit('getOldMsgs', oldMsgs => setMsgs([...oldMsgs]))
 				.on('reconnecting', ()=>console.log('reconnecting'))
 		} else {
 			socket.close()
@@ -76,8 +76,10 @@ export default ({user}) => {
 				<Button onClick={sendMsg} color="secondary">Send</Button>
 			</InputGroupAddon>
 		</InputGroup>
-		<ListGroup>
-			{msgs.map(makeListItems)}
-		</ListGroup>		
+		<div style={{overflow: 'auto',height: '100%'}}>
+			<ListGroup>
+				{msgs.map(makeListItems)}
+			</ListGroup>
+		</div>	
 	</div>
 }

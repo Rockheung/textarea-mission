@@ -38,9 +38,9 @@ exports.getBody = req => {
 	
 }
 
-exports.hasher = (...strs) => {
-	let shasum = createHash('sha512');
-  shasum.update(`${strs.join('')}`);
+exports.hasher = (...strs) => {	
+	let shasum = createHash('sha256');
+  shasum.update(`${[...strs].join('')}`);
   return shasum.digest('base64');
 }
 
@@ -57,10 +57,9 @@ exports.getKeysFromValue = function(_value) {
 	return _keys;
 }
 
-exports.customGenerateId = ({req,gen}) => {
-	let _hash = gen(req)
+exports.customGenerateId = gen => req => {
 	let { _sid } = cookie.parse(req.headers['cookie'] || '');
-	return _sid || this.hasher(new Date(),_hash);
+	return _sid || this.hasher(req.socket.localAddress,this.salt);
 }
 
 exports.wsAuth = ({socket, next, sessions}) => {
@@ -71,4 +70,16 @@ exports.wsAuth = ({socket, next, sessions}) => {
     return next();
   }
   return next(new Error('authentication error'));
+}
+
+exports.cookieSetter = (req,res) => {
+	let { _sid } = cookie.parse(req.headers['cookie'] || '');
+	if (!_sid) {
+		_sid = this.hasher(req.socket.localAddress,this.salt,new Date());
+		res.setHeader('set-cookie', cookie.serialize("_sid", _sid, {
+			httpOnly: true,
+			expires: new Date(Date.now() + 1000* 60 * 60)
+		}))
+	}
+	return _sid
 }

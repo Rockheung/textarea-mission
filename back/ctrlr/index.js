@@ -1,23 +1,17 @@
 const urlParse = require('url').parse;
-const cookie = require('cookie');
 const routes = require('./routes.js');
-const { getBody, cookieParser, hasher } = require('../lib/util.js');
-
+const { getBody, cookieSetter } = require('../lib/util.js');
 
 module.exports = async ({req,res,db,sessions})=>{
 	
 	let { method, headers, url } = req
 	let { pathname, search, query } = urlParse(req.url, true);
-	let { _sid } = cookie.parse(headers['cookie'] || '');
-	if (!_sid) {
-		res.setHeader('set-cookie', cookie.serialize("_sid", hasher(new Date()), {
-			httpOnly: true
-		}))
-	}
+  let _sid = cookieSetter(req,res)
 
 	try {
 		if (routes[pathname] && method === 'OPTIONS') {
-			res.setHeader('Access-Control-Allow-Origin', '*');
+			// 만약 CORS를 하려면, Origin에 특정 도메인을 지정하고, 클라이언트의 fetch에서 사용되는 요청에 credentials: true를 추가해야 합니다.
+			res.setHeader('Access-Control-Allow-Origin', '*'); 
 			res.setHeader('Access-Control-Allow-Method', 'GET, POST, DELETE, PUT');
 			res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Accept');
 			res.statusCode = 200;
