@@ -26,6 +26,7 @@ export default props => {
 			<NavbarToggler onClick={toggle} />
 			<Collapse isOpen={isOpen} navbar>
 				<Nav className="ml-auto" navbar>
+					{/**
 					<UncontrolledDropdown nav inNavbar>
 						<DropdownToggle nav caret>
 							Options
@@ -43,6 +44,7 @@ export default props => {
 							</DropdownItem>
 						</DropdownMenu>
 					</UncontrolledDropdown>
+					**/}					
 					<NavItem>
 						{props.user
 							? <LogoutButton

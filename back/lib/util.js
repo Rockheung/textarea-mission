@@ -1,3 +1,5 @@
+const path = require('path');
+const fs = require('fs');
 const { createHash } = require('crypto');
 const cookie = require('cookie');
 const formidable = require('formidable');
@@ -8,18 +10,28 @@ const getFiles = (err, fields, files) => {
       res.end(util.inspect({fields: fields, files: files}));
     }
 
+const UPLOAD_DIR = path.join(path.dirname(process.cwd()),'upload');
+if (!fs.existsSync(UPLOAD_DIR)) {
+	fs.mkdirSync(UPLOAD_DIR, 0o775)
+}
+
+exports.UPLOAD_DIR = UPLOAD_DIR
+
+exports.getSid = req => cookie.parse(req.headers['cookie'] || '')['_sid'];
+
 exports.getBody = req => {
 	if (req.method === "GET" || req.method === "DELETE") {
 		return null
 	} else if (req.headers['content-type'].startsWith('multipart/form-data')) {
-		const form = new formidable.IncomingForm()
+		const form = new formidable.IncomingForm();
+		form.uploadDir = UPLOAD_DIR
+		form.multiples = true
 		return new Promise((resolve, reject)=> {
 			form.parse(req, (err, fields, files) => {
 				if (err) {
 					reject(err)
 					return
 				}
-				console.log(files)
 				resolve(files)
 			})
 		})
@@ -57,11 +69,6 @@ exports.getKeysFromValue = function(_value) {
 	return _keys;
 }
 
-exports.customGenerateId = gen => req => {
-	let { _sid } = cookie.parse(req.headers['cookie'] || '');
-	return _sid || this.hasher(req.socket.localAddress,this.salt);
-}
-
 exports.wsAuth = ({socket, next, sessions}) => {
 	let { headers } = socket.request
 	let { _sid } = cookie.parse(headers['cookie'] || '');
@@ -73,6 +80,7 @@ exports.wsAuth = ({socket, next, sessions}) => {
 }
 
 exports.cookieSetter = (req,res) => {
+	console.log('cookie setter')
 	let { _sid } = cookie.parse(req.headers['cookie'] || '');
 	if (!_sid) {
 		_sid = this.hasher(req.socket.localAddress,this.salt,new Date());
@@ -83,3 +91,14 @@ exports.cookieSetter = (req,res) => {
 	}
 	return _sid
 }
+
+exports.fsRenamePromise = (oldPath, newPath) => new Promise((resolve, reject) => {
+	fs.rename(oldPath, newPath, err=>{
+		if (err) reject(err)
+		fs.stat(newPath, (err, stat)=>{
+			if (err) reject(err)
+			console.log(stat);
+			resolve();
+		})
+	})
+})

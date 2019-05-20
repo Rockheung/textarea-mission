@@ -15,7 +15,7 @@ export default props => {
 			if (files.length === 0) return null;
 			let formFiles = new FormData();
 			for (let i=0; i<files.length; i++) {
-				formFiles.append(files[i].name,files[i])
+				formFiles.append(i,files[i])
 			}
 			
 			const ops = {
@@ -31,18 +31,19 @@ export default props => {
 		
 	},[files])
 	
-	return <Container fluid>
-		{ "File Manager"}
-		<Row>
-			<Col sm="4">
-				<FileUpload
-					setFiles={setFiles}
-				/>
-				<FolderTree />
-			</Col>
-			<Col sm="8">
-				<Editor />
-			</Col>
-		</Row>
-	</Container>
+	return <>
+		<Container fluid>
+			<Row>
+				<Col sm="4">
+					<FileUpload
+						setFiles={setFiles}
+					/>
+					<FolderTree />
+				</Col>
+				<Col sm="8">
+					<Editor />
+				</Col>
+			</Row>
+		</Container>
+	</>
 }

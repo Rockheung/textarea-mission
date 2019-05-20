@@ -3,6 +3,7 @@ data/*
 !.gitkeep
 mongod.log
 mongod.log.*
+/upload
 
 # Logs
 logs

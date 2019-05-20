@@ -24,6 +24,7 @@ export default ({user}) => {
 	
 
 	const sendMsg = () => {
+		if (!user) return console.error('You must login first')
 		socket.emit('sendMsg', {
 			from: socket.id,
 			to: toWhom || DEFAULT_ROOM, 
@@ -64,12 +65,12 @@ export default ({user}) => {
 			  .emit('getOldMsgs', oldMsgs => setMsgs([...oldMsgs]))
 				.on('reconnecting', ()=>console.log('reconnecting'))
 		} else {
+			setMsgs([])
 			socket.close()
 		}
 	},[user])
 	
-	return <div>
-		You Are: <b>{user || DEFAULT_USER}</b>, and send to <b>{toWhom || DEFAULT_ROOM}</b>
+	return <Container fluid>
 		<InputGroup>
 			<Input placeholder="and..." onChange={updateInputMsg} onKeyUp={initToWhom} value={inputMsg} />
 			<InputGroupAddon addonType="append">
@@ -81,5 +82,5 @@ export default ({user}) => {
 				{msgs.map(makeListItems)}
 			</ListGroup>
 		</div>	
-	</div>
+	</Container>
 }
