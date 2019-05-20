@@ -16,11 +16,10 @@ export default function TreeUnit ({path,setText,getSubTree}) {
 		getSubTree={getSubTree}
 	/>
 	
-	const selectFile = () => setText()
 	
 	useEffect(()=>{
 		if (extend) {
-			getSubTree(path)
+			getSubTree('/'+path)
 			.then(res=>{
 				const {fileList, fileContent} = res
 				setSubTree(fileList)

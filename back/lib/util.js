@@ -144,3 +144,13 @@ exports.fsReadDirPromise = path => new Promise((resolve,reject) => {
 		resolve(files)
 	})
 })
+
+exports.fsReadFilePromise = path => new Promise((resolve,reject) => {
+	fs.readFile(path, 'utf8', (err,data)=>{
+		if (err) {
+			reject(err)
+			return
+		}
+		resolve(data)
+	})
+})

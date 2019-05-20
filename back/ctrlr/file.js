@@ -1,4 +1,4 @@
-const { UPLOAD_DIR, fsRenamePromise, getSid, fsStatPromise, fsReadDirPromise } = require('../lib/util.js');
+const { UPLOAD_DIR, fsRenamePromise, getSid, fsStatPromise, fsReadDirPromise, fsReadFilePromise } = require('../lib/util.js');
 const path = require('path');
 const fs = require('fs');
 const assert = require('assert')
@@ -10,6 +10,7 @@ exports.get = async ({res,queryString, body, header, db, sessions}) => {
 		const username = sessions.get(header.sessionID)
 		const requestedPath = path.join(UPLOAD_DIR, username, JSON.parse(queryString).path)
 		const fsUnit = await fsStatPromise(requestedPath)
+		// console.log('fsUnit',fsUnit)
 		if (fsUnit === null) {
 			res.write(JSON.stringify({
 				statusMsg:'file get ok',
@@ -20,7 +21,7 @@ exports.get = async ({res,queryString, body, header, db, sessions}) => {
 			res.write(JSON.stringify({
 				statusMsg:'file get ok',
 				fileList:null,
-				fileContent: null
+				fileContent: await fsReadFilePromise(requestedPath)
 			}))
 		} else if (fsUnit.isDirectory()) {
 			res.write(JSON.stringify({

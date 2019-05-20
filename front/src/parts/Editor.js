@@ -1,6 +1,9 @@
 import React from 'react';
-import { Container, Row, Col } from 'reactstrap';
+import { Container, Row, Col, Input, Button } from 'reactstrap';
 
-export default () => (
-	<div>Editor</div>
-)
+export default ({path, text, save}) => {
+	return <div>
+		<Button>Save</Button>
+		<Input type={"textarea"} value={text}></Input>
+	</div>
+}
