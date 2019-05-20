@@ -20,9 +20,9 @@ exports.post = async ({res,queryString, body, header, db, sessions}) => {
 		
 		for (const job of fsJobs) {
 			try {
-			  await job;	
+			  await job;
 			} catch (e) {
-				console.log(e.message)
+				console.log(e.message, 'will not override')
 			}
 		}
 		

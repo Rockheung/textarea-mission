@@ -98,17 +98,26 @@ exports.cookieSetter = (req,res) => {
 }
 
 exports.fsRenamePromise = (oldPath, newPath) => new Promise((resolve, reject) => {
-	fs.rename(oldPath, newPath, err=>{
-		if (err) {
-			reject(err)
-			return
+	fs.stat(newPath, (err, stat)=>{
+		if (!err) {
+			fs.unlink(oldPath, err=> {
+				if (err) console.log(new Error('Error occured when removing temp files'))
+			})
+			reject(new Error('File exists: '+ path.basename(newPath)))
+		} else if (err.errno === -2) {
+			fs.rename(oldPath, newPath, err=>{
+				if (err) {
+					reject(err)
+					return
+				}
+				fs.stat(newPath, (err,stat)=>{
+					if (err) {
+						reject(err)
+						return
+					}
+					resolve(stat)
+				})
+			})
 		}
-		if (fs.existsSync(newPath)) {
-			console.log("File overrided:",path.basename(newPath))
-		}
-		fs.stat(newPath, (err, stat)=>{
-			if (err) reject(err)
-			resolve();
-		})
 	})
 })
