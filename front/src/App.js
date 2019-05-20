@@ -23,7 +23,9 @@ function App() {
 		<Container fluid>
 			<Row>
 				<Col sm="9">
-					<FileManager />
+					<FileManager
+						user={user}
+					/>
 				</Col>
 				<Col sm="3">
 					<ChatRoom

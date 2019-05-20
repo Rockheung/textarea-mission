@@ -121,3 +121,16 @@ exports.fsRenamePromise = (oldPath, newPath) => new Promise((resolve, reject) =>
 		}
 	})
 })
+
+exports.fsStatPromise = path => new Promise((resolve,reject) => {
+	fs.stat(path, (err,stat)=>{
+		if (err && err.errno === -2) {
+			resolve(null)
+			return
+		} else if (err) {
+			reject(err)
+			return
+		}
+		resolve(stat)
+	})
+})

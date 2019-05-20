@@ -9,22 +9,6 @@ module.exports = {
 	// '/': {
 	// 	GET: static
 	// },
-	'/api/dev': {
-		GET: ({res, header})=>{
-			console.log(header);
-			
-			// res.writeHead(200, {'Access-Control-Allow-Origin': '*'})
-			res.write(JSON.stringify({statusMsg:'ok'}));
-			res.end();
-		},
-		POST: ({res, header})=>{
-			console.log(header);
-			
-			// res.writeHead(200, {'Access-Control-Allow-Origin': '*'})
-			res.write(JSON.stringify({statusMsg:'ok'}));
-			res.end();
-		}
-	},
 	'/api/user': {
 		POST: user.post
 	},
