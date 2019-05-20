@@ -9,6 +9,8 @@ import FileUpload from './FileUpload.js';
 export default ({user}) => {
 	
 	const [files, setFiles] = useState([]);
+	const [text, setText] = useState(null);
+
 	
 	const sendFiles = async files => {
 		if (files.length === 0) return null;
@@ -26,24 +28,9 @@ export default ({user}) => {
 		console.log(res)
 	}
 	
-	const refreshFiles = async (path = '/')=>{
-		path = path.replace(/\.\./g,'').replace(/\/+/g,'/')
-		const ops = {
-			method: 'GET'
-		}
-		const query = new URLSearchParams();
-		query.set('path', path)
-		let res = await fetch(`/api/file?${query.toString()}`, ops)
-		let json = await res.json();
-		console.log(json.fileList)
-		return json.fileList
-	}
-	
 	useEffect(()=>{
 		console.log('effect')
 		sendFiles(files)
-		refreshFiles()
-		
 	},[files])
 	
 	return <>
@@ -55,11 +42,13 @@ export default ({user}) => {
 					/>
 					<FolderTree 
 						user={user}
+						setText={setText}
 					/>
 				</Col>
 				<Col sm="8">
 					<Editor 
 						user={user}
+						text={text}
 					/>
 				</Col>
 			</Row>

@@ -134,3 +134,13 @@ exports.fsStatPromise = path => new Promise((resolve,reject) => {
 		resolve(stat)
 	})
 })
+
+exports.fsReadDirPromise = path => new Promise((resolve,reject) => {
+	fs.readdir(path, (err,files)=>{
+		if (err) {
+			reject(err)
+			return
+		}
+		resolve(files)
+	})
+})
