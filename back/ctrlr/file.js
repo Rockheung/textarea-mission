@@ -15,17 +15,15 @@ exports.post = async ({res,queryString, body, header, db, sessions}) => {
 		let username = sessions.get(header.sessionID)
 		let userPath = path.join(UPLOAD_DIR, username)
 		if (!fs.existsSync(userPath)) fs.mkdirSync(userPath, 0o775)
-		let fsJobs = [];
 		
-		for (let i = 0;  i < 3; i++) {
-			console.log(body[i].path, path.join(userPath,body[i].name))
-			const jobPromise = fsRenamePromise(body[i].path, path.join(userPath,body[i].name))
-			fsJobs = [...fsJobs, jobPromise]
-			
-		}
-		console.log(fsJobs)
+		let fsJobs = body.map(file=>fsRenamePromise(file.path, path.join(userPath,file.name)));
+		
 		for (const job of fsJobs) {
-			await job;
+			try {
+			  await job;	
+			} catch (e) {
+				console.log(e.message)
+			}
 		}
 		
 		res.end(JSON.stringify({statusMsg:'file post ok:'}))

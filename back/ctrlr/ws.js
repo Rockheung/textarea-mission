@@ -10,7 +10,8 @@ module.exports = ({io,socket,sessions,db}) => {
 			}
   	})
 	  .on('sendMsg',({from:socketId,to,msg})=>{
-		  if (sessions.has(socket.id)) {
+		  if (sessions.has(socketId)) {
+				console.log(sessions)
 				let whoSent = sessions.get(socketId);
 				let data = { from: whoSent, to, msg }	  
 				io.to(to).to(whoSent).emit('receiveMsg',data)

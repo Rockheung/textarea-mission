@@ -32,7 +32,12 @@ exports.getBody = req => {
 					reject(err)
 					return
 				}
-				resolve(files)
+				let i = 0;
+				let incommingFiles = []
+				while(files[i]) {
+					incommingFiles = [...incommingFiles,files[i++]]
+				}
+				resolve(incommingFiles)
 			})
 		})
 	} else if (req.headers['content-type'].startsWith('application/json')){
@@ -94,10 +99,15 @@ exports.cookieSetter = (req,res) => {
 
 exports.fsRenamePromise = (oldPath, newPath) => new Promise((resolve, reject) => {
 	fs.rename(oldPath, newPath, err=>{
-		if (err) reject(err)
+		if (err) {
+			reject(err)
+			return
+		}
+		if (fs.existsSync(newPath)) {
+			console.log("File overrided:",path.basename(newPath))
+		}
 		fs.stat(newPath, (err, stat)=>{
 			if (err) reject(err)
-			console.log(stat);
 			resolve();
 		})
 	})

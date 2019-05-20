@@ -74,7 +74,7 @@ export default ({user}) => {
 		<InputGroup>
 			<Input placeholder="and..." onChange={updateInputMsg} onKeyUp={initToWhom} value={inputMsg} />
 			<InputGroupAddon addonType="append">
-				<Button onClick={sendMsg} color="secondary">Send</Button>
+				<Button onClick={user && sendMsg} color="secondary">Send</Button>
 			</InputGroupAddon>
 		</InputGroup>
 		<div style={{overflow: 'auto',height: '100%'}}>
