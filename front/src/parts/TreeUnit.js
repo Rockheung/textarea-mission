@@ -48,7 +48,7 @@ export default function TreeUnit ({path,setText,setPath,getSubTree,cmdFns}) {
 	
 	return <ListGroupItem>
 		<span><Button size='sm' onClick={extendFn}>{extend ? 'ㅜ' : 'ㅏ'}</Button></span>{path === '' ? '/' : path}
-		{isTarOrZip(path) && <Button size='sm' onClick={unTatOrZip}>Ex</Button>}
+		{isTarOrZip(path) && <Button size='sm' onClick={unTatOrZip}>Decompress</Button>}
 		{extend && <ListGroup>
 			{subTree && subTree.map(makeSubTree)}
 		</ListGroup>}

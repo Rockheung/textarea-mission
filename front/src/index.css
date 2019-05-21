@@ -20,8 +20,8 @@ body{
 
 
 body * {
-	border-style: dashed;
-	border-width: 0.1px;
+	/* border-style: dashed;
+	border-width: 0.1px; */
 }
 
 body > div#root {
