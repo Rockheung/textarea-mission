@@ -5,6 +5,7 @@ export default function TreeUnit ({path,setText,setPath,getSubTree,cmdFns}) {
 	const [extend, setExtend] = useState(false);
 	const [subTree, setSubTree] = useState([]);
 	
+	
 	const extendFn = (e) => {
 		e.stopPropagation()
 		setExtend(!extend);
@@ -17,12 +18,8 @@ export default function TreeUnit ({path,setText,setPath,getSubTree,cmdFns}) {
 		].some(b=>b)
 	}
 	
-	const makeSubTree = subTreeItem => <TreeUnit
-		path={[path,subTreeItem].join('/')}
-		setText={setText}
-	  setPath={setPath}
-		getSubTree={getSubTree}
-	/>
+	const unTatOrZip = () =>cmdFns.untarFn(path)
+	
 	
 	useEffect(()=>{
 		if (extend) {
@@ -40,9 +37,18 @@ export default function TreeUnit ({path,setText,setPath,getSubTree,cmdFns}) {
 		}
 	},[extend])
 	
+	
+	const makeSubTree = subTreeItem => <TreeUnit
+		path={[path,subTreeItem].join('/')}
+		setText={setText}
+	  setPath={setPath}
+	  cmdFns={cmdFns}
+		getSubTree={getSubTree}
+	/>
+	
 	return <ListGroupItem>
 		<span><Button size='sm' onClick={extendFn}>{extend ? 'ㅜ' : 'ㅏ'}</Button></span>{path === '' ? '/' : path}
-		{isTarOrZip(path) && <Button size='sm' onClick={cmdFns.untarFn}></Button>}
+		{isTarOrZip(path) && <Button size='sm' onClick={unTatOrZip}>Ex</Button>}
 		{extend && <ListGroup>
 			{subTree && subTree.map(makeSubTree)}
 		</ListGroup>}

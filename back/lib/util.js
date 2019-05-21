@@ -187,9 +187,8 @@ exports.fsUnTarPromise = tarPath => new Promise((resolve,reject) => {
   if (path.extname(tarPath) !== '.tar') {
 		reject(new Error('Maybe not tar file'))
 	}
-	let dirPath = path.join(path.dirname(tarPath), path.basename(tarPath, '.tar'));
 	let readStream = fs.createReadStream(tarPath);
-	readStream.pipe(tar.extract(dirPath), {end:false});
+	readStream.pipe(tar.extract(path.dirname(tarPath)), {end:false});
 	readStream.on('end', resolve)	
 })
 

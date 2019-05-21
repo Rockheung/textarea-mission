@@ -7,6 +7,6 @@ export default ({user, path, text, setText, saveFn}) => {
 	const saveText = () => saveFn(path,text);
 	return <div>
 		<Button onClick={saveText}>Save</Button><span>{path}</span>
-		<Input type={"textarea"} value={text || ''} onChange={updateText}></Input>
+		<Input type={"textarea"} value={text || ''} onChange={updateText} disabled={!text}></Input>
 	</div>
 }
