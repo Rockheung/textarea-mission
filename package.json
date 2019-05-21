@@ -4,13 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-		"delay": "sleep 1",
-		"kill:db": "pkill -f mongod && pkill -f node",
-		"db:init": "rm -rf data && mkdir data && touch data/.gitkeep && rm -f mongod.log mongod.log.* && rm -rf upload",
+    "delay": "sleep 1",
+		"install:back": "npm --prefix back install",
+		"install:front": "npm --prefix front install",
+		"install:all": "run-s install:back install:front",
+    "kill:db": "pkill -f mongod && pkill -f node",
+    "db:init": "rm -rf data && mkdir data && touch data/.gitkeep && rm -f mongod.log mongod.log.* && rm -rf upload",
     "db:run": " mongod --config=mongod.conf &",
-		"back:run": "npm run --prefix back dev &",
-		"front:run": "npm run -prefix front start",
-		"dev:all": "run-s kill:db db:init db:run delay back:run front:run"
+    "back:run": "npm run --prefix back dev &",
+    "front:run": "npm run -prefix front start",
+    "dev:all": "run-s kill:db db:init db:run delay back:run front:run"
   },
   "repository": {
     "type": "git",
