@@ -13,8 +13,8 @@ export default function TreeUnit ({path,setText,setPath,getSubTree,cmdFns}) {
 	
 	const isTarOrZip = path =>{
 		return [ 
-			path.includes('.tar', path.length - 10),
-			path.includes('.zip', path.length - 10)
+			path.includes('.tar', path.length - 4),
+			path.includes('.zip', path.length - 4)
 		].some(b=>b)
 	}
 	

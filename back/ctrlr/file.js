@@ -1,5 +1,6 @@
 const { UPLOAD_DIR, getSid, urlCleaner, isText,
-			 fsRenamePromise, fsStatPromise, fsReadDirPromise, fsReadFilePromise, fsWriteFilePromise, fsUnTarPromise } = require('../lib/util.js');
+			 fsRenamePromise, fsStatPromise, fsReadDirPromise, 
+			 fsReadFilePromise, fsWriteFilePromise, fsUnTarPromise, unZipAsync, unZipPromise } = require('../lib/util.js');
 const path = require('path');
 const fs = require('fs');
 const assert = require('assert')
@@ -75,11 +76,11 @@ exports.put = async ({res,queryString, body, header, db, sessions}) => {
 		
 		const username = sessions.get(header.sessionID)
 		const requestedPath = path.join(UPLOAD_DIR, username, urlCleaner(JSON.parse(queryString).path))
-		console.log(requestedPath)
 		if (path.extname(requestedPath) === '.tar') {
 			await fsUnTarPromise(requestedPath)
+		}	else if (path.extname(requestedPath) === '.zip') {
+			await unZipPromise(requestedPath)
 		} else {
-			console.log(body)
 			await fsWriteFilePromise(requestedPath,body)
 		}
 		

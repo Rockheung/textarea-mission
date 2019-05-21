@@ -9,7 +9,7 @@ import FileUpload from './FileUpload.js';
 export default ({user}) => {
 	
 	const [files, setFiles] = useState([]);
-	const [text, setText] = useState('');
+	const [text, setText] = useState(null);
 	const [path, setPath] = useState(null);
 
 	

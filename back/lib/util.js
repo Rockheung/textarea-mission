@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const tar = require('tar-fs');
+const yauzl = require("yauzl");
 const { createHash } = require('crypto');
 const cookie = require('cookie');
 const formidable = require('formidable');
@@ -198,3 +199,86 @@ exports.textExts = new Set([
 ]);
 
 exports.isText = filePath => this.textExts.has(path.extname(filePath));
+
+
+// from yauzl promise example 
+const promisify = api => (...args) => new Promise((resolve, reject) => {
+	api(...args, function(err, response) {
+		if (err) return reject(err);
+		resolve(response);
+	});
+});
+
+exports.unZipAsync = async zipPath => {
+	try {
+		if (path.extname(zipPath) !== '.zip') {
+			reject(new Error('Maybe not zip file'))
+			return
+		}
+		const dirName = path.join(path.dirname(zipPath),path.basename(zipPath, '.zip'))
+		const target = fs.createWriteStream(dirName)
+		console.log(dirName)
+		const yauzlOpen = promisify(yauzl.open);
+		let zipfile = await yauzlOpen(zipPath, {lazyEntries: true})
+		let openReadStream = promisify(zipfile.openReadStream.bind(zipfile));
+		zipfile.readEntry();
+		zipfile.on("entry", async (entry) => {
+			let stream = await openReadStream(entry);
+			stream.on("end", () => {
+				zipfile.readEntry();
+			});
+			stream.pipe(target);
+		});
+		zipfile.on("end", () => {
+			console.log("end of entries");
+		});
+	} catch (e) {
+		console.log(e)
+	}
+}
+
+exports.unZipPromise = zipPath => new Promise((resolve,reject)=>{
+	
+	if (path.extname(zipPath) !== '.zip') {
+		reject(new Error('Maybe not zip file'))
+		return
+	}
+	yauzl.open(zipPath, {autoclose: false, lazyEntries: true}, function(err, zipfile) {
+  	if (err) {
+			reject(err)
+			return;
+		}
+		const dirName = path.join(path.dirname(zipPath),path.basename(zipPath, '.zip'))
+		if (!fs.existsSync(dirName)) {
+			fs.mkdirSync(dirName)
+		}
+		zipfile.readEntry();
+		zipfile.on("entry", function(entry) {
+			if (/\/$/.test(entry.fileName)) {
+				fs.mkdir(path.join(dirName,entry.fileName.replace(/\/$/,'')), 0o775, err=>{
+					if (err) {
+						reject(err)
+						return
+					}
+					zipfile.readEntry();
+				})
+			} else {
+				zipfile.openReadStream(entry, function(err, readStream) {
+					if (err) {
+						reject(err)
+						return;
+					}
+					const entryFile = fs.createWriteStream(path.join(dirName,entry.fileName))
+					readStream.on("end", function() {
+						zipfile.readEntry();
+					});
+					readStream.pipe(entryFile);
+				});
+			}
+		});
+		zipfile.once('end', ()=>{
+			zipfile.close();
+			resolve()
+		})
+	});
+})

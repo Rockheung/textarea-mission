@@ -12,7 +12,8 @@
     "formidable": "^1.2.1",
     "mongodb": "^3.2.3",
     "socket.io": "^2.2.0",
-    "tar-fs": "^2.0.0"
+    "tar-fs": "^2.0.0",
+    "yauzl": "^2.10.0"
   },
   "devDependencies": {}
 }
