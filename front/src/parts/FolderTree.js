@@ -5,11 +5,6 @@ import TreeUnit from './TreeUnit.js';
 export default ({user,setText}) => {
 	
 	const getFSUnits = async (path)=>{
-		path = path
-			.replace(/\.\./g,'')
-			.replace(/\/+/g,'/')
-			.replace(/\.\//g,'')
-			.replace(/.\/$/g,'')
 		const ops = {
 			method: 'GET'
 		}
@@ -22,6 +17,21 @@ export default ({user,setText}) => {
 			fileContent
 		}
 	}
+	
+	const putFSUnits = async (path, data=null)=>{
+		const ops = {
+			method: 'PUT',
+			headers: {
+				'Content-Type': 'text/plain'
+			},
+			body: data,
+		}
+		const query = new URLSearchParams();
+		query.set('path', path || '')
+		const res = await fetch(`/api/file?${query.toString()}`, ops)
+		console.log(res)
+	}
+	
 	return <ListGroup>
 		<TreeUnit
 			path={''}

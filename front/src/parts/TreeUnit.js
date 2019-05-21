@@ -23,12 +23,16 @@ export default function TreeUnit ({path,setText,getSubTree}) {
 				const {fileList, fileContent} = res
 				setSubTree(fileList)
 				setText(fileContent)
+				return fileList
+			})
+			.then(list=>{
+				if (list === null) setExtend(false)
 			})
 		}
 	},[extend])
 	
-	return <ListGroupItem onClick={extendFn}>
-		<span>{subTree &&	<>{extend ? 'ㅜ' : 'ㅏ'}</>}</span>{path === '' ? '/' : path}
+	return <ListGroupItem>
+		<span><Button size='sm' onClick={extendFn}>{extend ? 'ㅜ' : 'ㅏ'}</Button></span>{path === '' ? '/' : path}
 		{extend && <ListGroup>
 			{subTree && subTree.map(makeSubTree)}
 		</ListGroup>}

@@ -1,5 +1,6 @@
 const path = require('path');
 const fs = require('fs');
+const tar = require('tar-fs');
 const { createHash } = require('crypto');
 const cookie = require('cookie');
 const formidable = require('formidable');
@@ -85,9 +86,9 @@ exports.wsAuth = ({socket, next, sessions}) => {
 }
 
 exports.cookieSetter = (req,res) => {
-	console.log('cookie setter')
 	let { _sid } = cookie.parse(req.headers['cookie'] || '');
 	if (!_sid) {
+		console.log('cookie re-generated')
 		_sid = this.hasher(req.socket.localAddress,this.salt,new Date());
 		res.setHeader('set-cookie', cookie.serialize("_sid", _sid, {
 			httpOnly: true,
@@ -154,3 +155,36 @@ exports.fsReadFilePromise = path => new Promise((resolve,reject) => {
 		resolve(data)
 	})
 })
+
+exports.urlCleaner = path => path
+	.replace(/\.\./g,'')
+	.replace(/\/+/g,'/')
+	.replace(/\.\//g,'')
+	.replace(/.\/$/g,'')
+
+exports.fsWriteFilePromise = (path, text)=> new Promise((resolve,reject) =>{
+	fs.writeFile(path, text, 'utf8', (err) => {
+		if (err) {
+			reject(err)
+			return
+		}
+		resolve()
+  })
+})
+
+exports.fsUnTarPromise = tarPath => new Promise((resolve,reject) => {
+  if (path.extname(tarPath) !== '.tar') {
+		reject(new Error('Maybe not tar file'))
+	}
+	let dirPath = path.join(path.dirname(tarPath), path.basename(tarPath, '.tar'));
+	let readStream = fs.createReadStream(tarPath);
+	readStream.pipe(tar.extract(dirPath), {end:false});
+	readStream.on('end', resolve)	
+})
+
+
+exports.textExts = new Set([
+	'.txt','.c','.js','.log','.html','.css','.ini', '.md'
+]);
+
+exports.isText = filePath => this.textExts.has(path.extname(filePath));
