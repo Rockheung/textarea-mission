@@ -75,18 +75,21 @@ exports.put = async ({res,queryString, body, header, db, sessions}) => {
 		
 		const username = sessions.get(header.sessionID)
 		const requestedPath = path.join(UPLOAD_DIR, username, urlCleaner(JSON.parse(queryString).path))
+		console.log(requestedPath)
 		if (path.extname(requestedPath) === '.tar') {
 			await fsUnTarPromise(requestedPath)
 		} else {
+			console.log(body)
 			await fsWriteFilePromise(requestedPath,body)
 		}
 		
 		res.end(JSON.stringify({statusMsg:'file put ok:'}))
 	} catch (e) {
+		console.log(e)
 		if (e instanceof Error) e=500;
-		res.statusCode = e
-		res.write(JSON.stringify({statusMsg:'file put failed'}))
-		res.end()		
+		res.statusCode = e;
+		res.write(JSON.stringify({statusMsg:'file put failed'}));
+		res.end();
 	}
 }
 

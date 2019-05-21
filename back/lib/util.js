@@ -52,6 +52,17 @@ exports.getBody = req => {
 				resolve(JSON.parse(body))
 		  })
 		})
+	} else if (req.headers['content-type'].startsWith('text/plain')) {
+		return new Promise((resolve, reject)=> {
+		let body = [];
+		req
+		  .on('error', err => reject(err))
+			.on('data', chunk => body.push(chunk))
+			.on('end', () => {
+			  body = Buffer.concat(body).toString();
+				resolve(body)
+		  })
+		})
 	}
 	
 }

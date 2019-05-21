@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, ListGroup, ListGroupItem } from 'reactstrap';
 
-export default function TreeUnit ({path,setText,getSubTree}) {
+export default function TreeUnit ({path,setText,setPath,getSubTree,cmdFns}) {
 	const [extend, setExtend] = useState(false);
 	const [subTree, setSubTree] = useState([]);
 	
@@ -10,9 +10,17 @@ export default function TreeUnit ({path,setText,getSubTree}) {
 		setExtend(!extend);
 	}
 	
+	const isTarOrZip = path =>{
+		return [ 
+			path.includes('.tar', path.length - 10),
+			path.includes('.zip', path.length - 10)
+		].some(b=>b)
+	}
+	
 	const makeSubTree = subTreeItem => <TreeUnit
 		path={[path,subTreeItem].join('/')}
 		setText={setText}
+	  setPath={setPath}
 		getSubTree={getSubTree}
 	/>
 	
@@ -28,11 +36,13 @@ export default function TreeUnit ({path,setText,getSubTree}) {
 			.then(list=>{
 				if (list === null) setExtend(false)
 			})
+			.then(()=>setPath(path))
 		}
 	},[extend])
 	
 	return <ListGroupItem>
 		<span><Button size='sm' onClick={extendFn}>{extend ? 'ㅜ' : 'ㅏ'}</Button></span>{path === '' ? '/' : path}
+		{isTarOrZip(path) && <Button size='sm' onClick={cmdFns.untarFn}></Button>}
 		{extend && <ListGroup>
 			{subTree && subTree.map(makeSubTree)}
 		</ListGroup>}

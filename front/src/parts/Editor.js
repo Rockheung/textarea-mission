@@ -1,11 +1,12 @@
 import React from 'react';
 import { Container, Row, Col, Input, Button } from 'reactstrap';
 
-export default ({path, text, setText, save}) => {
+export default ({user, path, text, setText, saveFn}) => {
 	
 	const updateText = e => setText(e.target.value)
+	const saveText = () => saveFn(path,text);
 	return <div>
-		<Button>Save</Button>
-		<Input type={"textarea"} value={text} onChange={updateText}></Input>
+		<Button onClick={saveText}>Save</Button><span>{path}</span>
+		<Input type={"textarea"} value={text || ''} onChange={updateText}></Input>
 	</div>
 }
