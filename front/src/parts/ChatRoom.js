@@ -72,7 +72,7 @@ export default ({user}) => {
 	
 	return <Container fluid>
 		<InputGroup>
-			<Input placeholder="and..." onChange={updateInputMsg} onKeyUp={initToWhom} value={inputMsg} />
+			<Input placeholder={`to ${toWhom || DEFAULT_ROOM}`} onChange={updateInputMsg} onKeyUp={initToWhom} value={inputMsg} />
 			<InputGroupAddon addonType="append">
 				<Button onClick={user && sendMsg} color="secondary">Send</Button>
 			</InputGroupAddon>

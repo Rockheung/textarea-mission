@@ -49,6 +49,7 @@ export default ({user}) => {
 					<Editor 
 						user={user}
 						text={text}
+						setText={setText}
 					/>
 				</Col>
 			</Row>

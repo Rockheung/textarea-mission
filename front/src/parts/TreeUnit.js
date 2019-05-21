@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from 'reactstrap';
+import { Button, ListGroup, ListGroupItem } from 'reactstrap';
 
 export default function TreeUnit ({path,setText,getSubTree}) {
 	const [extend, setExtend] = useState(false);
@@ -16,7 +16,6 @@ export default function TreeUnit ({path,setText,getSubTree}) {
 		getSubTree={getSubTree}
 	/>
 	
-	
 	useEffect(()=>{
 		if (extend) {
 			getSubTree('/'+path)
@@ -28,10 +27,10 @@ export default function TreeUnit ({path,setText,getSubTree}) {
 		}
 	},[extend])
 	
-	return <li onClick={extendFn}>
+	return <ListGroupItem onClick={extendFn}>
 		<span>{subTree &&	<>{extend ? 'ㅜ' : 'ㅏ'}</>}</span>{path === '' ? '/' : path}
-		{extend && <ul>
+		{extend && <ListGroup>
 			{subTree && subTree.map(makeSubTree)}
-		</ul>}
-	</li>
+		</ListGroup>}
+	</ListGroupItem>
 }

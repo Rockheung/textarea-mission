@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import { Container, Row, Col } from 'reactstrap'; 
+import { Container, Row, Col, ListGroup } from 'reactstrap'; 
 import TreeUnit from './TreeUnit.js';
 
 export default ({user,setText}) => {
@@ -22,11 +22,11 @@ export default ({user,setText}) => {
 			fileContent
 		}
 	}
-	return <div>
+	return <ListGroup>
 		<TreeUnit
 			path={''}
 			setText={setText}
 			getSubTree={getFSUnits}
 	  />
-	</div>
+	</ListGroup>
 }
