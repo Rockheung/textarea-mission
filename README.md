@@ -2,6 +2,10 @@
 ### 환경
 
 mongodb@4.0.9, nodejs@8.16, react@16.8
+다음 명령을 통해 패키지를 설치할 수 있습니다.
+```bash
+npm run --prefix /workspace/mission/textarea-mission "install:all"
+```
 
 ### 실행
 
